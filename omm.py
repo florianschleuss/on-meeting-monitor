@@ -18,6 +18,7 @@ class TeamsState(Enum):
     PRESENTING = 'Presenting'
     NEWACTIVITY = 'New Activity'
     UNKNOWN = 'Unknown'
+    START = 'Start'
 
     @classmethod
     def from_string(cls, state_string: str) -> 'TeamsState':
@@ -46,8 +47,8 @@ class TeamsStateWatchdog():
                  update_hook = None) -> None:
         self._file_path: str = file_path
         self._last_state_change: datetime = datetime.now()
-        self.state: TeamsState = TeamsState.OFFLINE
-        self.old_state: TeamsState = TeamsState.OFFLINE
+        self.state: TeamsState = TeamsState.START
+        self.old_state: TeamsState = TeamsState.START
         self.timestamp: datetime = datetime.now()
         self._internal_loop: bool = False
         self._internal_loop_thread: threading.Thread

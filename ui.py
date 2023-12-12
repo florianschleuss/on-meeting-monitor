@@ -34,13 +34,14 @@ class App(QWidget):
 
     def on_state_update(self):
         toaster = ToastNotifier()
-        toaster.show_toast(
-            title=f"Teams Status: {self.teams_watchdog.state.value}",
-            msg=f"Changed from {self.teams_watchdog.old_state.value} -> {self.teams_watchdog.state.value}",
-            duration=1,  # Notification will disappear after 10 seconds
-            icon_path='',
-            threaded=True
-        )
+        if self.teams_watchdog.old_state is not TeamsState.START:
+            toaster.show_toast(
+                title=f"Teams Status: {self.teams_watchdog.state.value}",
+                msg=f"Changed from {self.teams_watchdog.old_state.value} -> {self.teams_watchdog.state.value}",
+                duration=1,  # Notification will disappear after 10 seconds
+                icon_path='',
+                threaded=True
+            )
         self.tray_icon.setToolTip(f"Teams: {self.teams_watchdog.state.value}")
         self.round_text.setText(self.teams_watchdog.state.value)
         if self.teams_watchdog.state in [TeamsState.BUSY, TeamsState.DONOTDISTURB, TeamsState.ONTHEPHONE, TeamsState.PRESENTING]:
