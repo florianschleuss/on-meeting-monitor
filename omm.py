@@ -198,7 +198,6 @@ class TeamsStateWatchdog():
 
     def stop(self):
         self._internal_loop = False
-        print('STOP')
 
 
 

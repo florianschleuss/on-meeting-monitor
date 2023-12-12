@@ -1,4 +1,5 @@
 import sys
+from typing import Optional, TextIO
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QStyle, QTextEdit, QWidget, QVBoxLayout, QPushButton, QSystemTrayIcon, QMenu
 from PyQt5.QtGui import QCloseEvent
@@ -12,13 +13,28 @@ For conversion to .exe: pyinstaller --onefile --windowed --name "OnMeeting Monit
 
 
 class ConsoleRedirect:
-    def __init__(self, widget, stream):
-        self.widget = widget
-        self.stream = stream
+    def __init__(self, widget: QTextEdit, stream: TextIO):
+        self.widget: QTextEdit = widget
+        self.stream: TextIO = stream
+        self.previous_message: Optional[str] = None
+        self.message_count: int = 0
 
-    def write(self, text):
+    def write(self, text: str):
+        if text == '\n':
+            # print() method appends second write call with '\n'
+            return
+        current_message = text.strip()
         self.widget.moveCursor(self.widget.textCursor().End)
-        self.widget.insertPlainText(text)
+
+        if current_message == self.previous_message:
+            self.message_count += 1
+            self.widget.insertPlainText('.')
+            return
+        elif self.message_count >= 1:
+            self.widget.insertPlainText('\n')
+        self.widget.insertPlainText(current_message)
+        self.previous_message = current_message
+        self.message_count = 1
 
     def flush(self):
         pass
@@ -132,9 +148,11 @@ class App(QWidget):
 
     def start_action(self):
         self.teams_watchdog.start(wait_time=30)
+        print('START')
 
     def stop_action(self):
         self.teams_watchdog.stop()
+        print('STOP')
 
     def update_action(self):
         self.teams_watchdog.refresh()
