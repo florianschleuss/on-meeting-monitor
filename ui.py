@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QLabel, QStyle, QTextEdit, QWidget, QVBoxLayout, QPushButton, QSystemTrayIcon, QMenu
+from PyQt5.QtGui import QCloseEvent
 from win10toast import ToastNotifier
 
 from omm import TeamsState, TeamsStateWatchdog
@@ -31,6 +32,16 @@ class App(QWidget):
         self.init_ui()
         print('AUTOSTART')
         self.start_action()
+
+    def closeEvent(self, event: QCloseEvent):
+        """
+        Override the close event to minimize the window instead of closing it.
+
+        Parameters:
+        - event (QCloseEvent): The close event.
+        """
+        event.ignore()
+        self.minimize_action()
 
     def on_state_update(self):
         toaster = ToastNotifier()
@@ -78,8 +89,8 @@ class App(QWidget):
         self.stop_button = QPushButton('Stop', self)
         self.stop_button.clicked.connect(self.stop_action)
 
-        self.minimize_button = QPushButton('Minimize', self)
-        self.minimize_button.clicked.connect(self.minimize_action)
+        self.exit_button = QPushButton('Exit', self)
+        self.exit_button.clicked.connect(self.exit_action)
 
         # Create console widget
         self.console = QTextEdit(self)
@@ -92,7 +103,7 @@ class App(QWidget):
         button_layout = QVBoxLayout()
         button_layout.addWidget(self.start_button)
         button_layout.addWidget(self.stop_button)
-        button_layout.addWidget(self.minimize_button)
+        button_layout.addWidget(self.exit_button)
 
         upper_row = QHBoxLayout()
         upper_row.addLayout(button_layout)
