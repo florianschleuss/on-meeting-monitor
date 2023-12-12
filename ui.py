@@ -147,10 +147,12 @@ class App(QWidget):
         self.tray_icon.show()
 
     def start_action(self):
+        self.start_button.setEnabled(False)
         self.teams_watchdog.start(wait_time=30)
         print('START')
 
     def stop_action(self):
+        self.start_button.setEnabled(True)
         self.teams_watchdog.stop()
         print('STOP')
 
