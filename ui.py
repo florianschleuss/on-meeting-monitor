@@ -71,7 +71,7 @@ class App(QWidget):
             )
         self.tray_icon.setToolTip(f"Teams: {self.teams_watchdog.state.value}")
         self.round_text.setText(self.teams_watchdog.state.value)
-        if self.teams_watchdog.state in [TeamsState.BUSY, TeamsState.DONOTDISTURB, TeamsState.ONTHEPHONE, TeamsState.PRESENTING]:
+        if self.teams_watchdog.state in [TeamsState.BUSY, TeamsState.DONOTDISTURB, TeamsState.ONTHEPHONE, TeamsState.PRESENTING, TeamsState.INAMEETING]:
             self.round_text.setStyleSheet(
                 "background-color: red; border-radius: 50px; color: white; font-size: 12px;")
         elif self.teams_watchdog.state in [TeamsState.AWAY, TeamsState.BERIGHTBACK]:

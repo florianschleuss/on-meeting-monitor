@@ -16,6 +16,7 @@ class TeamsState(Enum):
     DONOTDISTURB = 'Do Not Disturb'
     ONTHEPHONE = 'On The Phone'
     PRESENTING = 'Presenting'
+    INAMEETING = 'In a Meeting'
     NEWACTIVITY = 'New Activity'
     UNKNOWN = 'Unknown'
     START = 'Start'
